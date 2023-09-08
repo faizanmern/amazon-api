@@ -4,13 +4,12 @@ const puppeteer = require("puppeteer");
 
 app.get("/", async (req, res) => {
   let productUrl = req.query.url;
-
-  const browser = await puppeteer.launch({
-    headless: false,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
-    timeout: 60000,
-    executablePath: "C:/Program Files/Google/Chrome/Application/chrome.exe",
-  });
+  
+const browser = await puppeteer.launch({
+  headless: true,
+  executablePath: process.env.CHROME_EXECUTABLE_PATH,
+  timeout: process.env.PUPPETEER_TIMEOUT || 60000,
+});
   const page = await browser.newPage();
   await page.setCacheEnabled(true);
 
@@ -59,9 +58,11 @@ app.get("/", async (req, res) => {
   //   res.json({ success: true });
 });
 
-app.listen(8080, () => {
-  console.log("Server is running");
+const port = process.env.PORT || 8080;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
+
 
 // let data = {};
 //         for (let index = 0; index < 10; index++) {
