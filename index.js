@@ -7,7 +7,11 @@ app.get("/", async (req, res) => {
   
 const browser = await puppeteer.launch({
   headless: true,
-  executablePath: process.env.CHROME_EXECUTABLE_PATH,
+  executablePath: process.env.CHROME_EXECUTABLE_PATH, // Use environment variable
+  args: [
+    "--no-sandbox",
+    "--disable-setuid-sandbox",
+  ],
   timeout: process.env.PUPPETEER_TIMEOUT || 60000,
 });
   const page = await browser.newPage();
